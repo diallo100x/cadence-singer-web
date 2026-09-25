@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: cadence-singer-web
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: MAX_UPLOAD_BYTES
+        value: 104857600
