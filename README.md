@@ -50,3 +50,16 @@ Use only voices you own or have permission to use. Stock/licensed voicebanks are
 - doubles/harmonies
 - section-loop rendering
 - dry/tuned/double/harmony export
+
+## Public test deployment
+The Dockerfile runs FastAPI and includes ffmpeg. Push this repository to GitHub, then in Render create a Blueprint from the repository; `render.yaml` defines a Docker web service. The service starts with `uvicorn server:app --host 0.0.0.0 --port $PORT`. Check `/api/health` after deployment. Use HTTPS for Safari audio playback. This is a guide-performance fallback, **not an AI voice model**.
+
+Environment variables:
+- `PORT`: assigned by host; defaults to 8080.
+- `MAX_UPLOAD_BYTES`: maximum bytes per uploaded audio file, default 104857600.
+- `SINGING_ENGINE_CMD`: optional, trusted administrator-provided command template supporting `{guide}`, `{voice}`, `{out}`. Leave unset for the guide fallback. Only configure with a reviewed engine command and a licensed or consented voice.
+
+Uploads are held temporarily for each render and removed after the response. Audio, lyrics, and voice samples are not stored in the Git repository. On small hosting plans, long audio files can exceed CPU, memory, or request time limits. Safari supports audio formats according to the device and OS; WAV and M4A are practical inputs.
+
+## v0.2 Cadence Editor direction
+Build on the preserved sample-based alignment: waveform and piano-roll lanes, syllable blocks with duration and pitch curves, slides, vibrato and breath markers, bar/beat/subdivision coordinates, snap toggle, hard-locked first syllable, and natural internal timing as the default. Changes to timing should be explicit edits to guide-derived events. Preserve the working version in Git before adding extraction or synthesis architecture.
